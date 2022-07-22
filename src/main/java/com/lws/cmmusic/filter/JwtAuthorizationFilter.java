@@ -28,7 +28,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         // 1. 获取出请求头中的token
         String header = request.getHeader(SecurityConfig.HEADER_STRING);
         // 2. 判断是否存在token && 是否以指定的前缀
-        if(header == null && !header.startsWith(SecurityConfig.TOKEN_PREFIX)) {
+        if(header == null || !header.startsWith(SecurityConfig.TOKEN_PREFIX)) {
             // 如果没有token 就直接跳转到下一个filter
             chain.doFilter(request, response);
             return;
