@@ -22,7 +22,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public static final long EXPIRATION_TIME = 864000000;
     public static final String TOKEN_PREFIX = "Bearer ";
     public static final String HEADER_STRING = "Authorization";
-    public static final String CREATE_TOKEN_URL = "/users";
+    public static final String CREATE_TOKEN_URL = "/tokens";
 
     // 自定义 身份验证类
     UserService userService;
