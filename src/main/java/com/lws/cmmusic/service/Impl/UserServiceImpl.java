@@ -40,6 +40,7 @@ public class UserServiceImpl implements UserService {
     // 根据用户名查询数据
     @Override
     public User loadUserByUsername(String userName) {
+        System.out.println(userName);
         Optional<User> user = userRepository.findByUsername(userName);
         if (!user.isPresent()) {
             throw new BizException(ExceptionType.USER_NOT_FOUND);
@@ -81,6 +82,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String createToken(TokenCreateRequest tokenCreateRequest) {
+        System.out.println(tokenCreateRequest);
         User user = loadUserByUsername(tokenCreateRequest.getUsername());
         if (!passwordEncoder.matches(tokenCreateRequest.getPassword(), user.getPassword())) {
             throw new BizException(ExceptionType.USER_PASSWORD_NOT_MATCH);
@@ -118,7 +120,7 @@ public class UserServiceImpl implements UserService {
     // 判断用户名是否重复
     public void checkUserName(String userName) {
         Optional<User> username = userRepository.findByUsername(userName);
-        if(username.isPresent()) {
+        if (username.isPresent()) {
             throw new BizException(ExceptionType.USER_NAME_DUPLICATE);
         }
     }
@@ -126,7 +128,7 @@ public class UserServiceImpl implements UserService {
     // 通过ID获取用户后台信息(判断是否存在)
     public User getById(String id) {
         Optional<User> user = userRepository.findById(id);
-        if(!user.isPresent()) {
+        if (!user.isPresent()) {
             throw new BizException(ExceptionType.USER_NOT_FOUND);
         }
         return user.get();
@@ -138,11 +140,13 @@ public class UserServiceImpl implements UserService {
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+
     // 注入
     @Autowired
     public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
+
     // 注入
     @Autowired
     public void setUserMapper(UserMapper userMapper) {

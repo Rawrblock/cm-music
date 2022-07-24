@@ -18,6 +18,7 @@ public class TokenController {
     // 获取token
     @PostMapping
     public String create(@RequestBody TokenCreateRequest tokenCreateRequest) {
+        System.out.println(tokenCreateRequest);
         return userService.createToken(tokenCreateRequest);
     }
 

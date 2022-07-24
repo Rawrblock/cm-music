@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -16,6 +17,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 // 自定义 Security配置类
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(
+        prePostEnabled = true,
+        securedEnabled = true,
+        jsr250Enabled = true
+)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     public static final String SECRET = "CmMusic";
@@ -53,7 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST,"/users").permitAll()
                 .anyRequest().authenticated() // 表示除了上面定义的URL模式之外，用户访问其他URL都必须认证后访问(登录后访问)
                 .and()
-                .addFilter(new JwtAuthorizationFilter(authenticationManager())) // 添加权限过滤器
+                .addFilter(new JwtAuthorizationFilter(authenticationManager(), userService)) // 添加权限过滤器
                 .exceptionHandling() // 允许配置错误处理
                 .authenticationEntryPoint(restAuthenticationEntryPoint) // 开始身份验证过程
                 .and()

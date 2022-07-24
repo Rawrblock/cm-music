@@ -1,5 +1,6 @@
 package com.lws.cmmusic.entity;
 
+import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -11,6 +12,7 @@ import java.util.Date;
 
 // 标注该 类变为一个共有的实体类
 @MappedSuperclass
+@Data
 public abstract class AbstractEntity {
 
     @Id

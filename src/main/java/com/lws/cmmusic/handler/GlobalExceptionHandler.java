@@ -35,6 +35,7 @@ public class GlobalExceptionHandler {
         return errorResponse;
     }
 
+    // 捕捉 没有权限时
     @ExceptionHandler(value = AccessDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ErrorResponse accessDeniedHandler(Exception e) {
@@ -44,7 +45,7 @@ public class GlobalExceptionHandler {
         return errorResponse;
     }
 
-    // 捕捉 校验错误时的返回1
+    // 捕捉 校验错误时的返回 400
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public List<ErrorResponse> bizExceptionHandler(MethodArgumentNotValidException e) {

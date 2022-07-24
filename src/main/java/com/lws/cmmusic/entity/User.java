@@ -3,15 +3,18 @@ package com.lws.cmmusic.entity;
 import com.lws.cmmusic.enums.Gender;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @Data
+// user类实现 提供核心用户信息
 public class User extends AbstractEntity implements UserDetails {
 
     @Column(unique = true)
@@ -22,7 +25,7 @@ public class User extends AbstractEntity implements UserDetails {
     private String password; // 密码
 
     // 给当前设置的实体操作另一个实体的权限
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
@@ -46,7 +49,13 @@ public class User extends AbstractEntity implements UserDetails {
     // UserDetails提供的方法
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        // 存储权限数组
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        // 遍历对应用户的权限
+        for (Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
+        }
+        return authorities;
     }
 
     // 用户是否过期

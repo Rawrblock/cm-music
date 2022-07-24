@@ -3,6 +3,9 @@ package com.lws.cmmusic.filter;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.lws.cmmusic.config.SecurityConfig;
+import com.lws.cmmusic.entity.User;
+import com.lws.cmmusic.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,14 +16,16 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 
 // 自定义权限过滤器
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
-    public JwtAuthorizationFilter(AuthenticationManager authenticationManager) {
+    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, UserService userService) {
         super(authenticationManager);
+        this.userService = userService;
     }
+
+    UserService userService;
 
     // token登录
     @Override
@@ -49,7 +54,10 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                     .verify(header.replace(SecurityConfig.TOKEN_PREFIX, ""))
                     .getSubject();
             if (username != null) {
-                return new UsernamePasswordAuthenticationToken(username, null, new ArrayList<>());
+                // 通过用户名获取用户信息
+                User user = userService.loadUserByUsername(username);
+                // 获取设置好的权限
+                return new UsernamePasswordAuthenticationToken(username, null, user.getAuthorities());
             }
         }
         return null;
