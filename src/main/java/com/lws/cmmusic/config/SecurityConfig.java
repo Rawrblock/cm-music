@@ -38,6 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * 身份认证接口
+     *
      * @param http
      * @throws Exception
      */
@@ -56,7 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable() // CSRF禁用，因为不使用session
                 .authorizeRequests() // 限定通过签名的请求
                 .antMatchers(CREATE_TOKEN_URL).permitAll() // 设置该请求可以直接访问
-                .antMatchers(HttpMethod.POST,"/users").permitAll()
+                .antMatchers(HttpMethod.POST, "/users").permitAll()
                 .anyRequest().authenticated() // 表示除了上面定义的URL模式之外，用户访问其他URL都必须认证后访问(登录后访问)
                 .and()
                 .addFilter(new JwtAuthorizationFilter(authenticationManager(), userService)) // 添加权限过滤器
@@ -79,9 +80,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers("/swagger**/**")
                 .antMatchers("/webjars/**")
                 .antMatchers("/v3/**")
-                .antMatchers("/doc.html");
+                .antMatchers("/doc.html")
+                .antMatchers("/wechat/**");
     }
-
 
 
     // 注入自定义身份验证方案
@@ -89,6 +90,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void setRestAuthenticationEntryPoint(RestAuthenticationEntryPoint restAuthenticationEntryPoint) {
         this.restAuthenticationEntryPoint = restAuthenticationEntryPoint;
     }
+
     // 注入自定义身份验证类
     @Autowired
     public void setUserService(UserService userService) {

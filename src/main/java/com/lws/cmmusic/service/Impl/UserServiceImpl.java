@@ -40,7 +40,6 @@ public class UserServiceImpl implements UserService {
     // 根据用户名查询数据
     @Override
     public User loadUserByUsername(String userName) {
-        System.out.println(userName);
         Optional<User> user = userRepository.findByUsername(userName);
         if (!user.isPresent()) {
             throw new BizException(ExceptionType.USER_NOT_FOUND);
@@ -82,7 +81,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String createToken(TokenCreateRequest tokenCreateRequest) {
-        System.out.println(tokenCreateRequest);
         User user = loadUserByUsername(tokenCreateRequest.getUsername());
         if (!passwordEncoder.matches(tokenCreateRequest.getPassword(), user.getPassword())) {
             throw new BizException(ExceptionType.USER_PASSWORD_NOT_MATCH);
