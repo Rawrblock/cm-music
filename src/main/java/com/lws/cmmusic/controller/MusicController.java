@@ -25,7 +25,6 @@ public class MusicController {
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public MusicVo create(@Validated @RequestBody MusicCreateRequest musicCreateRequest) {
-        System.out.println(1);
         return musicMapper.toVo(musicService.create(musicCreateRequest));
     }
 
