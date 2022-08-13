@@ -1,4 +1,4 @@
-package com.lws.cmmusic.service.Impl;
+package com.lws.cmmusic.service.impl;
 
 import com.lws.cmmusic.dto.MusicCreateRequest;
 import com.lws.cmmusic.dto.MusicDto;
@@ -26,7 +26,7 @@ public class MusicServiceImpl implements MusicService {
     // 注入 JPA操作数据库
     private MusicRepository repository;
 
-    // TODO: 2022/8/4 增
+    // ------- 增
     // 新增歌曲
     @Override
     public MusicDto create(MusicCreateRequest musicCreateRequest) {
@@ -36,7 +36,7 @@ public class MusicServiceImpl implements MusicService {
         return musicMapper.toDto(demo);
     }
 
-    // TODO: 2022/8/4 改
+    // ------- 改
     @Override
     public MusicDto update(String id, MusicUpdateRequest musicUpdateRequest) {
         Music existMusic = getMusic(id);
@@ -60,7 +60,7 @@ public class MusicServiceImpl implements MusicService {
     }
 
 
-    // TODO: 2022/8/4 查
+    // ------- 查
     @Override
     public List<MusicDto> list() {
         return repository.findAll().stream().map(musicMapper::toDto).collect(Collectors.toList());

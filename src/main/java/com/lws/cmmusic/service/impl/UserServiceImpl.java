@@ -1,4 +1,4 @@
-package com.lws.cmmusic.service.Impl;
+package com.lws.cmmusic.service.impl;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
     // 注入 密码加密
     PasswordEncoder passwordEncoder;
 
-    // TODO: 2022/7/21 查
+    // ------- 查
     // 根据用户名查询数据
     @Override
     public User loadUserByUsername(String userName) {
@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    // TODO: 2022/7/21 增 
+    // ------- 增
     // 新增用户
     @Override
     public UserDto create(UserCreateRequest userCreateRequest) {
@@ -114,7 +114,7 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    // TODO: 2022/7/21 封装公用方法
+    // ------- 封装公用方法
     // 判断用户名是否重复
     public void checkUserName(String userName) {
         Optional<User> username = userRepository.findByUsername(userName);

@@ -29,7 +29,7 @@ public class UserController {
     // 注入 实体类转换
     UserMapper userMapper;
 
-    // TODO: 2022/7/21 增
+    // ------- 增
     // 用户新增接口
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -37,7 +37,7 @@ public class UserController {
         return userMapper.toVo(userService.create(userCreateRequest));
     }
 
-    // TODO: 2022/7/21 改
+    // ------- 改
     // 修改用户
     @PutMapping("/{id}")
     UserVo update(
@@ -46,7 +46,7 @@ public class UserController {
         return userMapper.toVo(userService.update(id, userUpdateRequest));
     }
 
-    // TODO: 2022/7/21 删
+    // ------- 删
     // 删除后台用户
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -55,7 +55,7 @@ public class UserController {
     }
 
 
-    // TODO: 2022/7/21 查
+    // ------- 查
     // 分页检索查询
     @GetMapping
     @ApiOperation("用户检索")

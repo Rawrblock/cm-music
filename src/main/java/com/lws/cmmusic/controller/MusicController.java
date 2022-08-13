@@ -21,14 +21,14 @@ public class MusicController {
 
     private MusicMapper musicMapper;
 
-    // TODO: 2022/8/4 增
+    // -------增
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public MusicVo create(@Validated @RequestBody MusicCreateRequest musicCreateRequest) {
         return musicMapper.toVo(musicService.create(musicCreateRequest));
     }
 
-    // TODO: 2022/8/4 改
+    // -------改
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public MusicVo update(@PathVariable String id, @Validated @RequestBody MusicUpdateRequest musicUpdateRequest) {
@@ -47,7 +47,7 @@ public class MusicController {
         musicService.close(id);
     }
 
-    // TODO: 2022/8/4 查
+    // -------查
     @GetMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<MusicVo> list() {
