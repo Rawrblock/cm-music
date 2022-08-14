@@ -37,12 +37,14 @@ public class MusicController {
 
     // 修改商品状态:上架
     @PostMapping("/{id}/publish")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void publish(@PathVariable String id) {
         musicService.publish(id);
     }
 
     // 下架
     @PostMapping("/{id}/close")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void close(@PathVariable String id) {
         musicService.close(id);
     }

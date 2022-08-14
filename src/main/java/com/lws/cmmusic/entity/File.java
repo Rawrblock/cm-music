@@ -5,6 +5,7 @@ import com.lws.cmmusic.enums.FileType;
 import com.lws.cmmusic.enums.Storage;
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -15,6 +16,7 @@ public class File extends AbstractEntity {
 
     private String name;
 
+    @Column(name = "file_key")
     private String key;
 
     private String ext;
@@ -22,7 +24,7 @@ public class File extends AbstractEntity {
     private Integer size;
 
     @Enumerated(EnumType.STRING)
-    private FileType fileType;
+    private FileType type;
 
     @Enumerated(EnumType.STRING)
     private Storage storage;

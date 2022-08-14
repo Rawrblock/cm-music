@@ -12,6 +12,7 @@ import com.lws.cmmusic.mapper.FileMapper;
 import com.lws.cmmusic.repository.FileRepository;
 import com.lws.cmmusic.service.FileService;
 import com.lws.cmmusic.service.StorageService;
+import com.lws.cmmusic.utils.FileTypeTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,14 +35,20 @@ public class FileServiceImpl implements FileService {
     @Transactional
     public FileUploadDto initUpload(FileUploadRequest fileUploadRequest) throws IOException {
         // 通过创建File实体
-        File file = fileRepository.save(fileMapper.createEntity(fileUploadRequest));
+        File file = fileMapper.createEntity(fileUploadRequest);
+        // 判断后缀
+        file.setType(FileTypeTransformer.getFileTypeFromExt(fileUploadRequest.getExt()));
+        file.setStorage(getDefaultStorage());
+        File savedFile = fileRepository.save(file);
+
         // 通过接口获取STS令牌
         FileUploadDto fileUploadDto = storageServices.get(getDefaultStorage().name()).initFileUpload();
 
-        fileUploadDto.setKey(file.getKey());
-        fileUploadDto.setFileId(file.getId());
+        fileUploadDto.setKey(savedFile.getKey());
+        fileUploadDto.setFileId(savedFile.getId());
         return fileUploadDto;
     }
+
 
     @Override
     public FileDto finishUpload(String id) {
@@ -53,15 +60,14 @@ public class FileServiceImpl implements FileService {
         // TODO: 2022/8/12 只有上传才能更新finish; 权限判断
 
         // TODO: 2022/8/12 验证远程文件是否存在
-        
+
         File file = fileOptional.get();
         file.setStatus(FileStatus.UPLOADING);
         return fileMapper.toDto(fileRepository.save(file));
     }
 
-
     // TODO: 2022/8/10 后台设置当前Storage
-    private Storage getDefaultStorage() {
+    public Storage getDefaultStorage() {
         return Storage.COS;
     }
 

@@ -5,7 +5,6 @@ import com.lws.cmmusic.filter.JwtAuthorizationFilter;
 import com.lws.cmmusic.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -29,6 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public static final String TOKEN_PREFIX = "Bearer ";
     public static final String HEADER_STRING = "Authorization";
     public static final String CREATE_TOKEN_URL = "/tokens";
+    public static final String SITE_SETTING_URL = "/settings/site";
 
     // 自定义 身份验证类
     UserService userService;
@@ -57,7 +57,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable() // CSRF禁用，因为不使用session
                 .authorizeRequests() // 限定通过签名的请求
                 .antMatchers(CREATE_TOKEN_URL).permitAll() // 设置该请求可以直接访问
-                .antMatchers(HttpMethod.POST, "/users").permitAll()
+                .antMatchers(SITE_SETTING_URL).permitAll()
+//                .antMatchers(HttpMethod.POST, "/users").permitAll()
                 .anyRequest().authenticated() // 表示除了上面定义的URL模式之外，用户访问其他URL都必须认证后访问(登录后访问)
                 .and()
                 .addFilter(new JwtAuthorizationFilter(authenticationManager(), userService)) // 添加权限过滤器

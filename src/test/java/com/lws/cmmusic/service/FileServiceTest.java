@@ -4,6 +4,7 @@ import com.lws.cmmusic.dto.FileDto;
 import com.lws.cmmusic.dto.FileUploadDto;
 import com.lws.cmmusic.dto.FileUploadRequest;
 import com.lws.cmmusic.enums.FileStatus;
+import com.lws.cmmusic.enums.Storage;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -27,8 +28,6 @@ class FileServiceTest {
         fileUploadRequest.setKey("83574aba850778a5b06bfd57f55c98c");
         fileUploadRequest.setSize(30000);
         FileUploadDto fileUploadDto = fileService.initUpload(fileUploadRequest);
-        Assertions.assertNotNull(fileUploadDto.getBucket());
-        Assertions.assertNotNull(fileUploadDto.getRegion());
         Assertions.assertNotNull(fileUploadDto.getSecretKey());
         Assertions.assertNotNull(fileUploadDto.getSecretId());
         Assertions.assertNotNull(fileUploadDto.getSessionToken());
@@ -50,6 +49,12 @@ class FileServiceTest {
         FileDto finishedFile = fileService.finishUpload(fileUploadDto.getFileId());
         Assertions.assertEquals(fileUploadDto.getFileId(), finishedFile.getId());
         Assertions.assertEquals(FileStatus.UPLOADING, finishedFile.getStatus());
+    }
+
+    @Test
+    void getDefaultStorage() {
+        Storage storage = fileService.getDefaultStorage();
+        Assertions.assertEquals(Storage.COS, storage);
     }
 
     @Autowired

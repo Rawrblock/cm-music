@@ -33,11 +33,11 @@ public class CosStorageServiceImpl implements StorageService {
             // 调用获取临时凭证接口
             Response response = CosStsClient.getCredential(getCosStsConfig());
             FileUploadDto fileUploadDto = new FileUploadDto();
-            fileUploadDto.setBucket(bucket);
-            fileUploadDto.setRegion(region);
             fileUploadDto.setSecretId(response.credentials.tmpSecretId);
             fileUploadDto.setSecretKey(response.credentials.tmpSecretKey);
             fileUploadDto.setSessionToken(response.credentials.sessionToken);
+            fileUploadDto.setStartTime(response.startTime);
+            fileUploadDto.setExpiredTime(response.expiredTime);
             return fileUploadDto;
         } catch (Exception e) {
             e.printStackTrace();
